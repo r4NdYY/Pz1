@@ -88,9 +88,17 @@ namespace ConsoleApp1
                 return -1;
         }
 
+        static int SearchBarrierHash(Hashtable hash, int x)
+        {
+            foreach (int key in hash.Keys)
+                if (hash[key].GetHashCode() == x)
+                    return key;
+            return -1;
+        }
+
         static void Main(string[] args)
         {
-            const int n = 9000000;             //пришлось сильно увеличить количество чисел в массиве,                                            
+            const int n = 910000;             //пришлось сильно увеличить количество чисел в массиве,                                            
             int[] a = new int[n];              //так как программа выполнялась быстрее 1/100000 мс и timespan не показывал результат
             Random rnd = new Random();
             Hashtable hash = new Hashtable(n);
@@ -98,6 +106,7 @@ namespace ConsoleApp1
             for (int i = 0; i < n; i++)
             {
                 a[i] = rnd.Next() % 500;
+                hash.Add(i, a[i]);
             }
 
             Timing objT = new Timing();
@@ -144,7 +153,22 @@ namespace ConsoleApp1
             Console.WriteLine("StopWatch: " + stpWatch2.Elapsed.ToString());
             Console.WriteLine("Timing: " + objT2.Result().ToString());
 
+            Timing objT3 = new Timing();
+            Stopwatch stpWatch3 = new Stopwatch();
+
+            objT3.StartTime();
+            stpWatch3.Start();
+
+            Console.WriteLine(SearchBarrierHash(hash, 100));
+
+            stpWatch3.Stop();
+            objT3.StopTime();
+
+            Console.WriteLine("StopWatch: " + stpWatch3.Elapsed.ToString());
+            Console.WriteLine("Timing: " + objT3.Result().ToString());
+
             //не успел реализовать метод цепочки для избежания коллизии при поиске элемента
         }
+
     }
 }
